@@ -14,7 +14,7 @@ const app = express();
 
 // initiating cors 
 app.use(cors({
-  origin: "*"
+  origin: "https://shaharkabesa.github.io/"
 }))
 
 // must write app.use(bodyParser.json()) in order for the api to recognize json
