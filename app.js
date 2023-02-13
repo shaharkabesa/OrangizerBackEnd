@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // Body-parser packed is used to read json data
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+require("dotenv").config();
 
 
 // will include dotenv config for concealing info
