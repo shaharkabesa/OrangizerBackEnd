@@ -13,11 +13,7 @@ require('dotenv/config');
 const app = express();
 
 // initiating cors 
-app.use(cors(
-  {
-    origin: "*"
-  }
-));
+app.use(cors());
 
 // must write app.use(bodyParser.json()) in order for the api to recognize json
 app.use(bodyParser.json());
