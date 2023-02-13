@@ -7,7 +7,6 @@ require("dotenv").config();
 
 
 // will include dotenv config for concealing info
-require('dotenv/config');
 
 
 const app = express();
