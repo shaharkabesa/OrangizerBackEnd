@@ -25,8 +25,8 @@ router.post('/register', async (req, res) => {
   if(error) return res.status(400).send(error.details); 
  
   //Checking if the user is already in the database
-  const emailExist = await User.findOne({email: req.body.email});
-  if(emailExist) return res.status(400).send("Email already exists.");
+  const usernameExist = await User.findOne({username: req.body.username});
+  if(usernameExist) return res.status(400).send("Username already exists.");
 
 
   //Has passwords
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
 
   const user = new User({
     name: req.body.name,
-    email: req.body.email,
+    username: req.body.username,
     container: req.body.container,
     password: hashedPassword,
     
@@ -54,19 +54,19 @@ router.post('/login', async (req,res) => {
   if(error) return res.status(400).json({message:error.details[0].message});
 
   // check if email exists
-  const user = await User.findOne({email: req.body.email});
-  if(!user) return res.status(400).json({message:"Email or password is wrong"});
+  const user = await User.findOne({username: req.body.username});
+  if(!user) return res.status(400).json({message:"Username or password is wrong"});
   
   //PASSWORD IS CORRECT
  const validPass = await bcrypt.compare(req.body.password, user.password);
- if(!validPass) return res.status(400).json({message:'Email or password is wrong'});
+ if(!validPass) return res.status(400).json({message:'Username or password is wrong'});
 
 
  // Create and assign a token
-  const options = { expiresIn: '1h' };
-  const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, options);
-  res.header('auth-token', token).json({message: "Successfuly logged in",SessionToken: token, container: user.container});
-  console.log(token);
+ const options = { expiresIn: '1h' };
+ const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, options);
+ res.header('auth-token', token).json({message: "Successfuly logged in",SessionToken: token, container: user.container});
+ console.log(token);
 })
 
 
