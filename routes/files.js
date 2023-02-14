@@ -20,6 +20,12 @@ router.get('/:id', verify ,  (req, res) => {
   
 })
 
+router.get('/search/:container/:clientNum/:id', (req, res) => {
+  GetDoc.find({container: req.params.container, clientNum: req.params.clientNum, filename: req.params.id }, (err, data) => {
+    res.json(data);
+  })
+})
+
 router.delete('/deleteFile/:id', verify , async (req, res) => {
 
   GetDoc.find({FileNum: req.params.id}, (err, data) => {

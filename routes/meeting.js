@@ -87,5 +87,11 @@ Meeting.deleteOne({MeetingNum: req.params.id}, (err, data) => {
 
 });
 
+router.get('/search/:container/:clientNum/:id', (req, res) => {
+  Meeting.find({container: req.params.container, ClientNum: req.params.clientNum, CustomerFullName: req.params.id }, (err, data) => {
+    res.json(data);
+  })
+})
+
 
 module.exports = router;
