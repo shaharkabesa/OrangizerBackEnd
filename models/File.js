@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 
 
 const FileSchema = mongoose.Schema({
+  
+  
+  originName: {
+    type: String,
+    required: true
+  },  
   url: {
     type: String,
     required: true
