@@ -21,16 +21,21 @@ router.get('/:id', verify ,  (req, res) => {
 })
 
 router.delete('/deleteFile/:id', verify , async (req, res) => {
-  GetDoc.deleteOne({FileNum: req.params.id}, (err, data) => {
-    console.log(data);
-    if(data) {
-      
-      res.json({message:"קובץ נמחק"});
-    } else {
-      res.json({message:err});
-    }
-  
-  });
+
+  GetDoc.find({FileNum: req.params.id}, (err, data) => {
+    var dat = data;
+    GetDoc.deleteOne({FileNum: req.params.id}, (err, data) => {
+      console.log(data);
+      if(data) {
+        
+        res.json({message:"קובץ נמחק", info: dat});
+      } else {
+        res.json({message:err});
+      }
+    
+    });
+  })
+ 
   
   
   });
@@ -49,6 +54,7 @@ router.post('/upload', verify , async (req, res) => {
   }
 
   const Getdoc = new GetDoc({
+    originName: req.body.fileDetails.originName,
     url: req.body.fileDetails.url,
     filename: req.body.fileDetails.filename,
     description: req.body.fileDetails.description,
