@@ -40,6 +40,23 @@ router.patch('/edit/:id', verify,  (req,res) => {
 })
 
 
+router.get('/allcustomers/:container', verify,  async (req , res) => {
+  const pageSize = 10;
+  const page = req.query.page || 1;
+  const count = await Customer.countDocuments();
+  const customers = await Customer.find({Container: req.params.container})
+    .skip((page - 1) * pageSize)
+    .limit(pageSize);
+
+  res.json({
+    page,
+    totalPages: Math.ceil(count / pageSize),
+    totalProducts: count,
+    customers
+  });
+});
+
+
 router.post('/addCustomer', verify , async (req, res) => {
 
   var clientNum = req.body.CustomerInfo.ClientNum;

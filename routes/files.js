@@ -28,9 +28,9 @@ router.get('/search/:container/:clientNum/:id', (req, res) => {
 
 router.delete('/deleteFile/:id', verify , async (req, res) => {
 
-  GetDoc.find({FileNum: req.params.id}, (err, data) => {
+  GetDoc.find({fileNum: req.params.id}, (err, data) => {
     var dat = data;
-    GetDoc.deleteOne({FileNum: req.params.id}, (err, data) => {
+    GetDoc.deleteOne({fileNum: req.params.id}, (err, data) => {
       console.log(data);
       if(data) {
         

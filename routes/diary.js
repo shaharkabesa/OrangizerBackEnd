@@ -1,18 +1,18 @@
 const express = require('express');
-const Meeting = require('../models/Meetings');
+const Diary = require('../models/Diarys');
 const router = express.Router();
 const verify  = require('./verifytoken');
 const jwt = require('jsonwebtoken');
 // validation
 const Joi = require('@hapi/joi');
-const { MeetingValidation } = require('../validation');
+const { DiaryValidation } = require('../validation');
 
 
 
 
 router.get('/:id', verify ,async (req,res) => {
   console.log(req.params.id);
-  Meeting.find({ClientNum: req.params.id}, (err, data) => {
+  Diary.find({ClientNum: req.params.id}, (err, data) => {
     res.json(data);
     console.log(data);
   })
@@ -20,7 +20,7 @@ router.get('/:id', verify ,async (req,res) => {
 
 
 router.get('/search/:MeetingNum', verify, (req, res) => {
-  Meeting.find({MeetingNum: req.params.MeetingNum}, (err, data) => {
+  Diary.find({MeetingNum: req.params.MeetingNum}, (err, data) => {
     res.json(data);
     console.log(data);
   })
@@ -29,7 +29,7 @@ router.get('/search/:MeetingNum', verify, (req, res) => {
 router.patch('/edit/:id' , verify, (req,res) => {
 
   console.log(req.body.MeetingInfo);
-  Meeting.updateMany({ClientNum: req.params.id}, {$set: {CustomerFullName: req.body.MeetingInfo.CustomerFullName, MeetingTheme: req.body.MeetingInfo.MeetingTheme, MeetingDate: req.body.MeetingInfo.MeetingDate, MeetingSummary: req.body.MeetingInfo.MeetingSummary, MeetingStatus: req.body.MeetingInfo.MeetingStatus}}, (err, data) => {
+  Diary.updateMany({ClientNum: req.params.id}, {$set: {CustomerFullName: req.body.MeetingInfo.CustomerFullName, MeetingTheme: req.body.MeetingInfo.MeetingTheme, MeetingDate: req.body.MeetingInfo.MeetingDate, MeetingSummary: req.body.MeetingInfo.MeetingSummary, MeetingStatus: req.body.MeetingInfo.MeetingStatus}}, (err, data) => {
     console.log(data);
     console.log(err);
     res.json(data);
@@ -41,7 +41,7 @@ router.patch('/edit/:id' , verify, (req,res) => {
 router.post('/addMeeting', verify , async (req, res) => {
   console.log(req.body);
   MeetingNumR = Math.floor(Math.random() * 999999);
-  const {error} = MeetingValidation(req.body.MeetingInfo);
+  const {error} = DiaryValidation(req.body.DiaryInfo);
   if(error) return res.status(400).send(error.details); 
   const CheckMeetingNum = Meeting.find({MeetingNum: MeetingNumR});
 
@@ -51,16 +51,15 @@ router.post('/addMeeting', verify , async (req, res) => {
 
   console.log(req.body.MeetingInfo);
 
-  const meeting = new Meeting({
-    CustomerFullName: req.body.MeetingInfo.CustomerFullName,
-    MeetingTheme: req.body.MeetingInfo.MeetingTheme,
-    MeetingDate: req.body.MeetingInfo.MeetingDate,
-    MeetingHour: req.body.MeetingInfo.MeetingHour,
-    MeetingSummary: req.body.MeetingInfo.MeetingSummary,
-    MeetingStatus: req.body.MeetingInfo.MeetingStatus,
+  const dairy = new Diary({
+    clientName: req.body.MeetingInfo.CustomerFullName,
+    address: req.body.MeetingInfo.MeetingTheme,
+    interested: req.body.MeetingInfo.MeetingDate,
+    meetingdate: req.body.MeetingInfo.MeetingHour,
+    hour: req.body.MeetingInfo.MeetingSummary,
+    diaryNum: MeetingNumR,
     Container: req.body.MeetingInfo.Container,
-    ClientNum: req.body.MeetingInfo.ClientNum,
-    MeetingNum: MeetingNumR
+
   })
 
   
@@ -76,7 +75,7 @@ router.post('/addMeeting', verify , async (req, res) => {
 });
 
 router.delete('/deleteMeeting/:id', verify , async (req, res) => {
-Meeting.deleteOne({MeetingNum: req.params.id}, (err, data) => {
+  Diary.deleteOne({MeetingNum: req.params.id}, (err, data) => {
   if(data) {
     res.json({message:"פגישה נמחקה"});
   } else {
@@ -89,7 +88,7 @@ Meeting.deleteOne({MeetingNum: req.params.id}, (err, data) => {
 });
 
 router.get('/search/:container/:clientNum/:id', (req, res) => {
-  Meeting.find({container: req.params.container, ClientNum: req.params.clientNum, CustomerFullName: req.params.id }, (err, data) => {
+  Diary.find({container: req.params.container, ClientNum: req.params.clientNum, CustomerFullName: req.params.id }, (err, data) => {
     res.json(data);
   })
 })
