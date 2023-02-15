@@ -33,11 +33,13 @@ const customerRoute = require('./routes/customer');
 const meetingRoute = require('./routes/meeting');
 const fileRoute = require('./routes/files');
 const user = require('./routes/user');
+const diary = require('./routes/diary');
 app.use('/api/posts', postRoute);
 app.use('/api/user', user);
 app.use('/api/customer', customerRoute);
 app.use('/api/meeting', meetingRoute);
 app.use('/api/file', fileRoute);
+app.use('/api/diary', diary);
 //ROUTES
 app.get('/', (req,res) => {
   res.send("We are on home");
